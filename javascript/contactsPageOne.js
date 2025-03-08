@@ -4,8 +4,8 @@ let sortedContactsByName, resetBgColor = 0, lastIndex, editIndex;
  *  Loads functions that are needed upfront.
  */
 async function onload() {
-    await loadContacts();
     await loadActualUser();
+    await loadContacts();
     await initialsOf();
     renderContactList();
 }

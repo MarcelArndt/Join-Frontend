@@ -22,9 +22,9 @@ let urlVariable = checkUrlFeature();
  * initializing all Settings for the Page
  */
 async function initBoard() {
+  await loadActualUser();
   await loadTasks();
   await baordLoadTasks();
-  await loadActualUser();
   await initialsOf();
   sortLoadetTasks();
   cleanAllColums();

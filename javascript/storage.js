@@ -112,35 +112,53 @@ async function loadUsers() {
 
 async function loadActualUser() {
     actualUser = "Guest"
+    userData = {}
     if(!checkForToken()) backToStartSite();
-    userEmail = await findUserByTokenAndGetEmail();
-    contactData = await findContactByEmail(userEmail);
+    try{
+        userData = await findUserByTokenAndGetData();
+    } catch(error){
+    }
+    if(!userData.isToken){
+        backToStartSite()
+    }
+    contactData = await findContactByEmail(userData);
 }
 
-async function findUserByTokenAndGetEmail(){
-    token = localStorage.getItem("access")
-    body = {"token": token }
-    user = await setItem('auth/find-by-token', JSON.stringify(body), "POST")
+async function findUserByTokenAndGetData(){
+    const token = localStorage.getItem("access")
+    const body = {"token": token}
+    const user = await setItem('auth/find-by-token', JSON.stringify(body), "POST")
     if (user && user.name && user.name == "Guest"){
         actualUser = {
+            "isToken": true,
             "color": "#fff",
             "name" : "Guest",
             "email" : "",
             "phone" : "",
             "initials" : "G"
         }
-        return
+        return actualUser
     }
-    return user.email
+    return {isToken: user.isToken, email: user.email, name: user.name}
 }
 
 function backToStartSite(){
     window.location.href = 'start.html';
 }
 
-async function findContactByEmail(userEmail){
-    if(!userEmail) return
-    body = {"email": userEmail}
+async function findContactByEmail(userData){
+    if(!userData.isToken) return
+    let contact = {}
+    if(userData.name == "Guest"){
+    contact = {
+        "name" : "Guest",
+        "email" : "",
+        "color" : "#fff",
+        "phone" : "#fff",
+    }
+    return contact
+    }
+    const body = {"email": userData.email}
     contact = await setItem('contacts/find-by-email', JSON.stringify(body), "POST")
     actualUser = contact
 }

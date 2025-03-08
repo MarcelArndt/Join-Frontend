@@ -2,8 +2,7 @@
  * This function gets executed on load to start the script.
  */
 async function initSignUp() {
-  await loadUsers();
-  loadContacts();
+  
 }
 
 /**
@@ -53,6 +52,7 @@ async function checkUsers(email, password, username) {
     successfulText();
   }
 }
+
   /**
    * This function gets the user to the login side. A Timeout start thsi function after 2,5 seconds.
    * 

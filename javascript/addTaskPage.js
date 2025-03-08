@@ -5,11 +5,11 @@ currentColumn = 0;
  * loads executes Functions that are needed upfront.
  */
 async function onload() {
+  await loadActualUser();
   setMinDate();
   loadTasks();
   loadUsers();
   await loadContacts();
-  await loadActualUser();
   await initialsOf();
   pressMediumButton();
   addContactsToPage();
